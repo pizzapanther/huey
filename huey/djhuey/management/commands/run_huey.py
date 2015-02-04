@@ -13,6 +13,8 @@ except ImportError:
     # Django 1.6
     HAS_DJANGO_APPS = False
 
+HAS_DJANGO_APPS = False
+
 from huey.consumer import Consumer
 from huey.bin.huey_consumer import get_loglevel
 from huey.bin.huey_consumer import setup_logger
