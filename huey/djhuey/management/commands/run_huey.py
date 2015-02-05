@@ -13,8 +13,6 @@ except ImportError:
     # Django 1.6
     HAS_DJANGO_APPS = False
 
-HAS_DJANGO_APPS = False
-
 from huey.consumer import Consumer
 from huey.bin.huey_consumer import get_loglevel
 from huey.bin.huey_consumer import setup_logger
@@ -64,9 +62,11 @@ class Command(BaseCommand):
         for config in django_apps.get_app_configs():
             app_path = config.module.__path__
             try:
-                imp.find_module(module_name, app_path)
+                module_args = imp.find_module(module_name, app_path)
             except ImportError:
                 continue
+            else:
+                imp.load_module('{}.{}'.format(config.name, module_name), *module_args)
 
     def autodiscover_old(self):
         # this is to find modules named <commands.py> in a django project's
